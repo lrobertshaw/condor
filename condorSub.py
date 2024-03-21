@@ -6,39 +6,21 @@ import os
 print('\nSTART\n')
 ts = calendar.timegm(time.gmtime())
 
-ev_types = {
-   "TTbar": {
-      "inputFiles" : "/afs/cern.ch/user/l/lroberts/jetStudies/CMSSW_12_5_2_patch1/src/condor/fileListTTbar.list",
-      "jobName" : "TTbar",
-      "outputFolder" : "/eos/user/l/lroberts/outputFiles/seedSize/TTbar/"
-   },
-   "singNeut": {
-      "inputFiles" : "/afs/cern.ch/user/l/lroberts/jetStudies/CMSSW_12_5_2_patch1/src/condor/fileListSingNeut.list",
-      "jobName" : "singNeut",
-      "outputFolder" : "/eos/user/l/lroberts/outputFiles/seedSize/singNeut/" #"/eos/cms/store/group/dpg_trigger/comm_trigger/L1Trigger/lroberts/outputFiles/jets16/SingNeut/"
-   }
-}
+""" Parsing cmd line args """
+jobName      = str( sys.argv[1] )    # 1st arg is job name ie TTBar
+fileListName = str( sys.argv[2] )    # 2nd arg is file containing list of input files
+outputDir    = str( sys.argv[3] )  #dat["outputFolder"]
 
-try:
-   dat = ev_types[str(sys.argv[1])]
-except:
-   print("Invalid event type, valid event types: {}".format(str(ev_types.keys())))
+jobCfg = "../python/runPerformanceNTuple.py" #"/afs/cern.ch/user/l/lroberts/jetStudies/CMSSW_12_5_2_patch1/src/condor/runPerformanceNTuple.py"
+jobScript = "./cmsRun.sh"
+rel = "CMSSW_12_5_2_patch1"
 
-
-# job level configurables
-fileListName = dat["inputFiles"]   #"/afs/cern.ch/user/l/lroberts/jetStudies/CMSSW_12_5_2_patch1/src/condor/fileListTTbar.list"
-jobName = dat["jobName"]   #"singNeutData"
-jobCfg = "/afs/cern.ch/user/l/lroberts/jetStudies/CMSSW_12_5_2_patch1/src/condor/runPerformanceNTuple.py"
 
 fileList = open(fileListName,"r").readlines()
-
-jobScript = "cmsRun.sh"
-rel = "CMSSW_12_5_2_patch1"
-rootDir = os.environ["CMSSW_BASE"] + "/src/condor/"
-#eosDir = "/eos/cms/store/group/dpg_trigger/comm_trigger/L1Trigger/lroberts/condor/" + jobName + "_" + str(ts) + "/"
+rootDir = os.environ["CMSSW_BASE"] + "/src/FastPUPPI/condor/"
 jobDir = rootDir + jobName + "_" + str(ts) + "/"
-ret = 0
 
+ret = 0
 while ret == 0:
    ret = os.system("mkdir " + jobDir)
    ret = os.chdir(os.environ["CMSSW_BASE"]+"/../")
@@ -58,7 +40,7 @@ while ret == 0:
       jdl.write("Output = "    + jobDir + "$(ProcId).o\n")
       jdl.write("Error = "     + jobDir + "$(ProcId).e\n")
       jdl.write("Log = "       + jobDir + "$(ProcId).l\n")
-      jdl.write("Arguments = " + jobDir + " " + jobName + " " + rel + " " + " $(ProcId) " + fileListName + " " + jobCfg + " " + dat["outputFolder"] + "\n")
+      jdl.write("Arguments = " + jobDir + " " + jobName + " " + rel + " " + " $(ProcId) " + fileListName + " " + jobCfg + " " + outputDir + "\n")
       jdl.write("+MaxRuntime = 28800\n")
       jdl.write("on_exit_remove = (ExitBySignal == False) && (ExitCode == 0)\n")
       jdl.write("max_retries = 3\n")
