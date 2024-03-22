@@ -11,10 +11,9 @@ jobName      = str( sys.argv[1] )    # 1st arg is job name ie TTBar
 fileListName = str( sys.argv[2] )    # 2nd arg is file containing list of input files
 outputDir    = str( sys.argv[3] )  #dat["outputFolder"]
 
-jobCfg = "../python/runPerformanceNTuple.py" #"/afs/cern.ch/user/l/lroberts/jetStudies/CMSSW_12_5_2_patch1/src/condor/runPerformanceNTuple.py"
+jobCfg = "../NtupleProducer/python/runPerformanceNTuple.py" #"/afs/cern.ch/user/l/lroberts/jetStudies/CMSSW_12_5_2_patch1/src/condor/runPerformanceNTuple.py"
 jobScript = "./cmsRun.sh"
 rel = "CMSSW_12_5_2_patch1"
-
 
 fileList = open(fileListName,"r").readlines()
 rootDir = os.environ["CMSSW_BASE"] + "/src/FastPUPPI/condor/"
@@ -44,7 +43,7 @@ while ret == 0:
       jdl.write("+MaxRuntime = 28800\n")
       jdl.write("on_exit_remove = (ExitBySignal == False) && (ExitCode == 0)\n")
       jdl.write("max_retries = 3\n")
-      jdl.write('requirements = (OpSysAndVer =?= "CentOS7")\n') #jdl.write("requirements = Machine =!= LastRemoteHost\n")
+      jdl.write('requirements = (OpSysAndVer =?= "CentOS7")\n') #require centOS7 for correct architecture
       jdl.write("Queue " + str(len(fileList)) + "\n")
 
    os.system("condor_submit " + jobDir + jobName + ".jdl")
