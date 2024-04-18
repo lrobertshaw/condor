@@ -11,8 +11,8 @@ jobName      = str( sys.argv[1] )    # 1st arg is job name ie TTBar
 fileListName = str( sys.argv[2] )    # 2nd arg is file containing list of input files
 outputDir    = str( sys.argv[3] )  #dat["outputFolder"]
 
-jobCfg = "../NtupleProducer/python/runPerformanceNTuple.py" #"/afs/cern.ch/user/l/lroberts/jetStudies/CMSSW_12_5_2_patch1/src/condor/runPerformanceNTuple.py"
-jobScript = "./cmsRun.sh"
+jobCfg = "/afs/cern.ch/user/l/lroberts/jetStudies/CMSSW_12_5_2_patch1/src/FastPUPPI/NtupleProducer/python/runPerformanceNTuple.py" #"/afs/cern.ch/user/l/lroberts/jetStudies/CMSSW_12_5_2_patch1/src/condor/runPerformanceNTuple.py"
+jobScript = "/afs/cern.ch/user/l/lroberts/jetStudies/CMSSW_12_5_2_patch1/src/FastPUPPI/condor/cmsRun.sh"
 rel = "CMSSW_12_5_2_patch1"
 
 fileList = open(fileListName,"r").readlines()
@@ -26,7 +26,7 @@ while ret == 0:
    print('Tarballing ' + rel + "/...")
    ret = os.system("tar --exclude='perfTuple.root' --exclude='perfNano.root'  --exclude='.git' -zcf " + jobName + ".tgz " + rel)
    print( 'Done!')
-   ret = os.system("mv " + jobName + ".tgz " + jobDir) 
+   ret = os.system("mv " + jobName + ".tgz " + jobDir)
    ret = os.chdir(rootDir)
 
    with open(jobDir + jobName + '.jdl', 'w') as jdl:
