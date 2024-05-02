@@ -11,8 +11,8 @@ jobName      = str( sys.argv[1] )    # 1st arg is job name ie TTBar
 fileListName = str( sys.argv[2] )    # 2nd arg is file containing list of input files
 outputDir    = str( sys.argv[3] )  #dat["outputFolder"]
 
-jobCfg = "/afs/cern.ch/user/l/lroberts/jetStudies/CMSSW_12_5_2_patch1/src/FastPUPPI/NtupleProducer/python/runPerformanceNTuple.py" #"/afs/cern.ch/user/l/lroberts/jetStudies/CMSSW_12_5_2_patch1/src/condor/runPerformanceNTuple.py"
-jobScript = "/afs/cern.ch/user/l/lroberts/jetStudies/CMSSW_12_5_2_patch1/src/FastPUPPI/condor/cmsRun.sh"
+jobCfg = "$PWD/../NtupleProducer/python/runPerformanceNTuple.py" #"/afs/cern.ch/user/l/lroberts/jetStudies/CMSSW_12_5_2_patch1/src/condor/runPerformanceNTuple.py"
+jobScript = "$PWD/cmsRun.sh"
 rel = "CMSSW_12_5_2_patch1"
 
 fileList = open(fileListName,"r").readlines()
