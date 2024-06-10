@@ -11,12 +11,12 @@ jobName      = str( sys.argv[1] )    # 1st arg is job name ie TTBar
 fileListName = str( sys.argv[2] )    # 2nd arg is file containing list of input files
 outputDir    = str( sys.argv[3] )  #dat["outputFolder"]
 
-jobCfg = "$PWD/../NtupleProducer/python/runPerformanceNTuple.py" #"/afs/cern.ch/user/l/lroberts/jetStudies/CMSSW_12_5_2_patch1/src/condor/runPerformanceNTuple.py"
-jobScript = "$PWD/cmsRun.sh"
+jobCfg = "/users/wq22321/jetStudies/CMSSW_12_5_2_patch1/src/FastPUPPI/NtupleProducer/python/config.py" #"/afs/cern.ch/user/l/lroberts/jetStudies/CMSSW_12_5_2_patch1/src/condor/runPerformanceNTuple.py"
+jobScript = f"{os.getcwd()}/cmsRun.sh"
 rel = "CMSSW_12_5_2_patch1"
 
 fileList = open(fileListName,"r").readlines()
-rootDir = os.environ["CMSSW_BASE"] + "/src/FastPUPPI/condor/"
+rootDir = os.environ["CMSSW_BASE"] + "/src/FastPUPPI/condor/jobs/"
 jobDir = rootDir + jobName + "_" + str(ts) + "/"
 
 ret = 0
@@ -24,14 +24,14 @@ while ret == 0:
    ret = os.system("mkdir " + jobDir)
    ret = os.chdir(os.environ["CMSSW_BASE"]+"/../")
    print('Tarballing ' + rel + "/...")
-   ret = os.system("tar --exclude='perfTuple.root' --exclude='perfNano.root'  --exclude='.git' -zcf " + jobName + ".tgz " + rel)
+   ret = os.system("tar --exclude='perfTuple.root' --exclude='.tgz' --exclude='perfNano.root'  --exclude='.git' -zcf " + jobName + ".tgz " + rel)
    print( 'Done!')
    ret = os.system("mv " + jobName + ".tgz " + jobDir)
    ret = os.chdir(rootDir)
 
    with open(jobDir + jobName + '.jdl', 'w') as jdl:
       jdl.write("universe = vanilla\n")
-      #jdl.write("x509userproxy = $ENV(X509_USER_PROXY)\n")
+      jdl.write("x509userproxy = $ENV(X509_USER_PROXY)\n")
       jdl.write("Executable = " + jobScript + "\n")
       jdl.write("Should_Transfer_Files = YES\n")
       jdl.write("WhenToTransferOutput = ON_EXIT\n")
