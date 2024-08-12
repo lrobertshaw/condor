@@ -19,8 +19,9 @@ export $SCRAM_ARCH=slc7_amd64_gcc700
 cd ${3}/src/
 scramv1 b ProjectRename
 eval `scramv1 runtime -sh` # cmsenv is an alias not on the workers
+export X509_USER_PROXY=/afs/cern.ch/user/l/lroberts/myproxy
 cmsRun ${6} $inFile   #inputFile=$inFile
-cp perfNano.root ${7}${4}.root
-rm perfNano.root
+cp inputs131X.root ${7}inputs131X_${4}.root
+rm inputs131X.root
 cd ${_CONDOR_SCRATCH_DIR}
 rm -rf ${3}
