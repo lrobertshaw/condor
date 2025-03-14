@@ -1,5 +1,4 @@
-jobName="variousMassCutsTTbar"
-inputFiles="/eos/user/l/lroberts/P2_Jets/InputData/CMSSW14/TTbar/"
-# outputDir="/eos/user/l/lroberts/P2_Jets/WideCone/working_dir/jetMassStudies/hh4b/"
+jobName="Phase2Spring24_SingleNeutrino_PU200"
+inputFiles="/eos/cms/store/cmst3/group/l1tr/FastPUPPI/14_2_X/fpinputs_140X/v0/SingleNeutrino_PU200/"
 
-python3 condorSub.py "$jobName" "$inputFiles" #"$outputDir"
+python3 condorSub.py "$jobName" "$inputFiles"

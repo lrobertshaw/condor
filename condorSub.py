@@ -11,9 +11,9 @@ jobName      = str( sys.argv[1] )    # 1st arg is job name ie TTBar
 inputFilesDirectory = str( sys.argv[2] )    # 2nd arg is file containing list of input files
 # outputDir    = str( sys.argv[3] )  #dat["outputFolder"]
 
-jobCfg = "/eos/user/l/lroberts/P2_Jets/CMSSW_14_0_0_pre3/src/FastPUPPI/NtupleProducer/python/config.py" #"/afs/cern.ch/user/l/lroberts/jetStudies/CMSSW_12_5_2_patch1/src/condor/runPerformanceNTuple.py"
+jobCfg = "/eos/user/l/lroberts/Jet_Mass/CMSSW_14_2_0_pre2/src/FastPUPPI/NtupleProducer/python/config.py"
 jobScript = f"{os.getcwd()}/cmsRun.sh"
-rel = "CMSSW_14_0_0_pre3"
+rel = "CMSSW_14_2_0_pre2"
 
 # fileList = open(fileListName,"r").readlines()
 rootDir = os.environ["CMSSW_BASE"] + "/src/FastPUPPI/condor/jobs"
@@ -46,6 +46,7 @@ while ret == 0:
       jdl.write("Should_Transfer_Files = YES\n")
       jdl.write("WhenToTransferOutput = ON_EXIT\n")
       jdl.write(f"Transfer_Input_Files = {jobScript}, {jobCfg}\n")
+      jdl.write(f"Transfer_Output_Files = {jobDir}/info/outfiles.o")
       jdl.write(f"Output = {jobDir}/info/$(ProcId).o\n")
       jdl.write(f"Error = {jobDir}/info/$(ProcId).e\n")
       jdl.write(f"Log = {jobDir}/info/$(ProcId).l\n")
