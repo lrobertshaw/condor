@@ -11,9 +11,9 @@ jobName      = str( sys.argv[1] )    # 1st arg is job name ie TTBar
 inputFilesDirectory = str( sys.argv[2] )    # 2nd arg is file containing list of input files
 # outputDir    = str( sys.argv[3] )  #dat["outputFolder"]
 
-jobCfg = "/eos/user/l/lroberts/Jet_Mass/CMSSW_14_2_0_pre2/src/FastPUPPI/NtupleProducer/python/config.py"
+jobCfg = "/dice/users/wq22321/dominic/CMSSW_14_0_0_pre3/src/FastPUPPI/NtupleProducer/python/runPerformanceNTuple.py"
 jobScript = f"{os.getcwd()}/cmsRun.sh"
-rel = "CMSSW_14_2_0_pre2"
+rel = "CMSSW_14_0_0_pre3"
 
 # fileList = open(fileListName,"r").readlines()
 rootDir = os.environ["CMSSW_BASE"] + "/src/FastPUPPI/condor/jobs"
@@ -46,7 +46,7 @@ while ret == 0:
       jdl.write("Should_Transfer_Files = YES\n")
       jdl.write("WhenToTransferOutput = ON_EXIT\n")
       jdl.write(f"Transfer_Input_Files = {jobScript}, {jobCfg}\n")
-      jdl.write(f"Transfer_Output_Files = {jobDir}/info/outfiles.o")
+      # jdl.write(f"Transfer_Output_Files = {jobDir}/info/outfiles.o\n")
       jdl.write(f"Output = {jobDir}/info/$(ProcId).o\n")
       jdl.write(f"Error = {jobDir}/info/$(ProcId).e\n")
       jdl.write(f"Log = {jobDir}/info/$(ProcId).l\n")
@@ -54,7 +54,7 @@ while ret == 0:
       jdl.write(f"+MaxRuntime = 28800\n")
       jdl.write(f"on_exit_remove = (ExitBySignal == False) && (ExitCode == 0)\n")
       jdl.write(f"max_retries = 3\n")
-      #jdl.write('requirements = (OpSysAndVer =?= "CentOS7")\n') #require centOS7 for correct architecture
+      #jdl.write('requirements = (OpSysAndVer =?= "CentOS7")\n')    #require centOS7 for correct architecture
       jdl.write(f"Queue {str(len(fileList))}\n")
 
    os.system(f"condor_submit --spool {jobDir}/{jobName}.jdl")
